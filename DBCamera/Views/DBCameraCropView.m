@@ -7,11 +7,11 @@
 //
 
 #import "DBCameraCropView.h"
+#import "DBHoleView.h"
 
 @interface DBCameraCropView () {
     UIImageView *_imageView;
 }
-
 @end
 
 @implementation DBCameraCropView
@@ -36,27 +36,27 @@
 
 - (void) setCropRect:(CGRect)cropRect
 {
-    if( !CGRectEqualToRect(_cropRect, cropRect) ){
-        // center the rect
-        cropRect = (CGRect){ 0, 0, cropRect.size.width, cropRect.size.height };
-        cropRect = CGRectOffset(cropRect, (CGRectGetWidth(self.frame) - CGRectGetWidth(cropRect)) * .5, (CGRectGetHeight(self.frame) - CGRectGetHeight(cropRect)) * .5);
-
-        _cropRect = CGRectOffset(cropRect, self.frame.origin.x, self.frame.origin.y);
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.f);
-        
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        [[UIColor blackColor] setFill];
-        UIRectFill(self.bounds);
-        
-        CGContextSetStrokeColorWithColor(context, [[UIColor whiteColor] colorWithAlphaComponent:0.5].CGColor);
-        CGContextStrokeRect(context, cropRect);
-        [[UIColor clearColor] setFill];
-        UIRectFill(CGRectInset(cropRect, 1, 1));
-        
-        [_imageView setImage:UIGraphicsGetImageFromCurrentImageContext()];
-        
-        UIGraphicsEndImageContext();
-    }
+    // center the rect
+    cropRect = (CGRect){ 0, 0, cropRect.size.width, cropRect.size.height };
+    cropRect = CGRectOffset(cropRect, (CGRectGetWidth(self.frame) - CGRectGetWidth(cropRect)) * .5, (CGRectGetHeight(self.frame) - CGRectGetHeight(cropRect)) * .5);
+    _cropRect = CGRectOffset(cropRect, self.frame.origin.x, self.frame.origin.y);
+    
+    
+    DBHoleView *holeView = [[DBHoleView alloc] initWithFrame:self.bounds fillColor:[UIColor blackColor] holeFrame:cropRect];
+    [self addSubview:holeView];
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
