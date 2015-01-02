@@ -239,9 +239,6 @@ static const CGSize kFilterCellSize = { 75, 90 };
     if ( !_navigationBar ) {
         _navigationBar = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, [[UIScreen mainScreen] bounds].size.width, 64 }];
         [_navigationBar setBackgroundColor:[UIColor blackColor]];
-        [_navigationBar setUserInteractionEnabled:YES];
-        [_navigationBar addSubview:self.useButton];
-        [_navigationBar addSubview:self.retakeButton];
         if ( !_forceQuadCrop )
             [_navigationBar addSubview:self.cropButton];
     }
@@ -252,9 +249,12 @@ static const CGSize kFilterCellSize = { 75, 90 };
 - (UIView *) bottomBar
 {
     if ( !_bottomBar ) {
-        _bottomBar = [[UIView alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight([[UIScreen mainScreen] bounds]) - 40, [[UIScreen mainScreen] bounds].size.width, 40 }];
+        CGFloat height = 70;
+        _bottomBar = [[UIView alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight([[UIScreen mainScreen] bounds]) - height, [[UIScreen mainScreen] bounds].size.width, height }];
         [_bottomBar setBackgroundColor:[UIColor blackColor]];
-        [_bottomBar setHidden:YES];
+
+        [_bottomBar addSubview:self.useButton];
+        [_bottomBar addSubview:self.retakeButton];
         
         if ( !_forceQuadCrop ) {
             UIButton *actionsheetButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -273,10 +273,10 @@ static const CGSize kFilterCellSize = { 75, 90 };
 {
     if ( !_useButton ) {
         _useButton = [self baseButton];
-        [_useButton setTitle:[DBCameraLocalizedStrings(@"button.use") uppercaseString] forState:UIControlStateNormal];
+        [_useButton setTitle:@"Add Cue" forState:UIControlStateNormal];
         [_useButton.titleLabel sizeToFit];
         [_useButton sizeToFit];
-        [_useButton setFrame:(CGRect){ CGRectGetWidth(self.view.frame) - (CGRectGetWidth(_useButton.frame) + buttonMargin), 0, CGRectGetWidth(_useButton.frame) + buttonMargin, 60 }];
+        [_useButton setFrame:(CGRect){ CGRectGetWidth(self.view.frame) - (CGRectGetWidth(_useButton.frame) + buttonMargin), 0, CGRectGetWidth(_useButton.frame) + buttonMargin, 70 }];
         [_useButton addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -287,10 +287,10 @@ static const CGSize kFilterCellSize = { 75, 90 };
 {
     if ( !_retakeButton ) {
         _retakeButton = [self baseButton];
-        [_retakeButton setTitle:[DBCameraLocalizedStrings(@"button.retake") uppercaseString] forState:UIControlStateNormal];
+        [_retakeButton setTitle:@"Retake" forState:UIControlStateNormal];
         [_retakeButton.titleLabel sizeToFit];
         [_retakeButton sizeToFit];
-        [_retakeButton setFrame:(CGRect){ 0, 0, CGRectGetWidth(_retakeButton.frame) + buttonMargin, 60 }];
+        [_retakeButton setFrame:(CGRect){ 0, 0, CGRectGetWidth(_retakeButton.frame) + buttonMargin, 70 }];
         [_retakeButton addTarget:self action:@selector(retakeImage) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -316,7 +316,7 @@ static const CGSize kFilterCellSize = { 75, 90 };
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setBackgroundColor:[UIColor clearColor]];
     [button setTitleColor:self.tintColor forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:12];
+    button.titleLabel.font = [UIFont fontWithName:@"DINAlternate-Bold" size:17];
     
     return button;
 }
