@@ -9,7 +9,6 @@
 #import "DBCameraSegueViewController.h"
 #import "DBCameraBaseCropViewController+Private.h"
 #import "DBCameraCropView.h"
-#import "DBCameraFiltersView.h"
 #import "DBCameraFilterCell.h"
 #import "DBCameraLoadingView.h"
 #import "UIImage+TintColor.h"
