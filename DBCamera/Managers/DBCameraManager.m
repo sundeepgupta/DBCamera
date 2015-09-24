@@ -111,6 +111,20 @@
 - (void) captureImageForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
 {
     AVCaptureConnection *videoConnection = [DBCameraManager connectionWithMediaType:AVMediaTypeVideo fromConnections:_stillImageOutput.connections];
+
+    if (!videoConnection) {
+        NSError *error = [NSError errorWithDomain:@"DBCamera"
+                                             code:-1
+                                         userInfo:@{
+                                                 NSLocalizedFailureReasonErrorKey : @"cameraimage.noconnection"
+                                         }];
+
+        if ([_delegate respondsToSelector:@selector(captureImageFailedWithError:)]) {
+            [_delegate captureImageFailedWithError:error];
+        }
+
+        return;
+    }
     
     if ( [videoConnection isVideoOrientationSupported] ) {
         switch (deviceOrientation) {
@@ -133,7 +147,7 @@
     }
     
     [videoConnection setVideoScaleAndCropFactor:_maxScale];
-    
+
     __weak AVCaptureSession *captureSessionBlock = _captureSession;
     __weak id<DBCameraManagerDelegate>delegateBlock = _delegate;
     
@@ -146,7 +160,7 @@
              UIImage *image = [[UIImage alloc] initWithData:imageData];
              
              CFDictionaryRef metadata = CMCopyDictionaryOfAttachments(NULL, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
-             NSDictionary *meta = (__bridge NSDictionary *)(metadata);
+             NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
              CFRelease(metadata);
              
              if ( [delegateBlock respondsToSelector:@selector(captureImageDidFinish:withMetadata:)] )
