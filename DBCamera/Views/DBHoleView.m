@@ -32,7 +32,7 @@
     CGRect intersectionFrame = CGRectIntersection(self.holeFrame, rect);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    if(CGRectIntersectsRect(intersectionFrame, rect)) {
+    if (CGRectIntersectsRect(intersectionFrame, rect)) {
         CGContextAddEllipseInRect(context, intersectionFrame);
         CGContextClip(context);
         CGContextClearRect(context, intersectionFrame);
